@@ -35,7 +35,7 @@ public class CheckoutService implements ICheckout {
     rentalAgreementDto.setDueDate(utilityService.formatDate(dueDate));
     rentalAgreementDto.setIndependenceDay(isIndependenceDay(dueDate, checkoutDate));
     rentalAgreementDto.setLaborDay(isLaborDay(utilityService.getLocalDate(checkoutDate), dueDate));
-    rentalAgreementDto.setChargeDaysCount(getChargeDays(rentalDayCount));
+    rentalAgreementDto.setChargeDaysCount(getChargeDays(rentalDayCount, checkoutDate));
     rentalAgreementDto.setDiscountPercent(getDiscountPercent(discountPercent));
     double preDiscountCharge = getPreDiscountCharge();
     double discountAmount = getDiscountAmount(discountPercent, preDiscountCharge);
@@ -86,7 +86,7 @@ public class CheckoutService implements ICheckout {
     rentalAgreementDto.setCheckoutDate(checkoutDate);
   }
 
-  private int getChargeDays(int rentalDayCount) {
+  private int getChargeDays(int rentalDayCount, String checkoutDate) {
     int chargeDays = rentalDayCount;
     if (rentalAgreementDto.isIndependenceDay() || rentalAgreementDto.isLaborDay() ) {
       if (!isHolidayCharge()) {
@@ -95,8 +95,18 @@ public class CheckoutService implements ICheckout {
     }
     if (!isWeekendCharge()) {
       chargeDays -= rentalAgreementDto.getNumberOfDaysInWeekend();
+    } else {
+      chargeDays -= shiftIndependenceDayOnWeekend(checkoutDate);
     }
     return chargeDays;
+  }
+
+  private int shiftIndependenceDayOnWeekend(String checkoutDate) {
+    int daysToSubtract = 0;
+    if (isIndependenceDayOnWeekend(checkoutDate)) {
+      daysToSubtract = 1;
+    }
+    return daysToSubtract;
   }
 
   private double getPreDiscountCharge() {
@@ -134,13 +144,27 @@ public class CheckoutService implements ICheckout {
       if (copyCheckDate.getDayOfWeek().getValue() == 1 && checkoutDateWithLabor.contains(copyCheckDate.toString())) {
         isLaborDay = true;
       }
-      if (copyCheckDate.getDayOfWeek().getValue() == 6 || copyCheckDate.getDayOfWeek().getValue() == 7) {
+      if (isItWeekendDay(copyCheckDate)) {
         numberOfDaysInWeekend += 1;
       }
       copyCheckDate = copyCheckDate.plusDays(1);
     }
     rentalAgreementDto.setNumberOfDaysInWeekend(numberOfDaysInWeekend);
     return isLaborDay;
+  }
+
+  private boolean isIndependenceDayOnWeekend(String checkoutDate) {
+    boolean isForthOfJulyOnWeekend = false;
+    LocalDate checkDate = utilityService.getLocalDate(checkoutDate);
+    LocalDate forth = LocalDate.parse(utilityService.getIndependenceDay(checkDate));
+    if (isItWeekendDay(forth)) {
+      isForthOfJulyOnWeekend = true;
+    }
+    return isForthOfJulyOnWeekend;
+  }
+
+  private boolean isItWeekendDay(LocalDate localDate) {
+    return (localDate.getDayOfWeek().getValue() == 6 || localDate.getDayOfWeek().getValue() == 7);
   }
 
 }
