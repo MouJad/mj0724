@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
  **/
 @Controller
 public class DisplayController {
+
   @Autowired
   private ITool toolService;
   @Autowired
@@ -32,6 +33,7 @@ public class DisplayController {
   private UtilityService utilityService;
   @Autowired
   private RentalAgreementService rentalAgreementService;
+
   public void displayTerminal() {
     List<Tool> tools = toolService.toolsList();
     List<RentalCharge> rentCharges = rentalChargeService.rentalChargelist();
@@ -44,6 +46,6 @@ public class DisplayController {
     checkoutService.processCheckout(toolCode, rentalDayCount, discountPercent, fixedCheckoutDate);
     RentalAgreementDto rentalAgreementDto = rentalAgreementService.getRentalAgreementDto();
     new RentalAgreementView().printRentalAgreement(rentalAgreementDto);
-
   }
+  
 }

@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  **/
 @SpringBootApplication
 public class ToolsRentalRegister implements CommandLineRunner {
+
 	private static Logger logger = LoggerFactory.getLogger(ToolsRentalRegister.class);
 	@Autowired
 	private DisplayController displayController;

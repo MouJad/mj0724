@@ -21,6 +21,7 @@ public class ValidationService implements IValidate {
 
   @Autowired
   private ITool toolService;
+
   @Override
   public void validateInput(String toolCode, int numberOfDays, int discountPercent, String checkoutDate) {
     if (numberOfDays < 1) {
@@ -38,12 +39,14 @@ public class ValidationService implements IValidate {
       throwException(CHECKOUT_DATE_FORMAT_EXCEPTION);
     }
   }
+
   private List<String> populateToolCodes() {
     return toolService.toolsList()
         .stream()
         .map(Tool::getCode)
         .collect(Collectors.toList());
   }
+
   private boolean isDateFormatValid(String checkoutDate) {
     checkDateLength(checkoutDate);
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yy");
@@ -55,11 +58,13 @@ public class ValidationService implements IValidate {
     }
     return true;
   }
+
   private void checkDateLength(String checkoutDate) {
     if (checkoutDate.split("/").length != 3) {
       throwException(CHECKOUT_DATE_FORMAT_EXCEPTION);
     }
   }
+
   private void throwException(String errorMessage) {
     throw new IllegalArgumentException(errorMessage);
   }

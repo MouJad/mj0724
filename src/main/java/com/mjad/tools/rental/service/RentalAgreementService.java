@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class RentalAgreementService implements IRentalAgreement {
+
   @Autowired
   private RentalAgreementRepository rentAgreementRepo;
   private RentalAgreementDto rentalAgreementDto;

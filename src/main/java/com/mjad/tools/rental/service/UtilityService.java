@@ -16,6 +16,7 @@ public class UtilityService {
 
   private static final DecimalFormat df = new DecimalFormat("#,###.00");
   private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yy");
+
   public String appendZeroToDate(String checkoutDate) {
     if (checkoutDate.length() == 8) {
       return checkoutDate;
@@ -47,9 +48,11 @@ public class UtilityService {
   public LocalDate addRentalDaysToCheckoutDate(int rentalDayCount, LocalDate checkoutDate) {
     return checkoutDate.plusDays(rentalDayCount);
   }
+
   public LocalDate getLocalDate(String checkoutDate) {
     return LocalDate.parse(checkoutDate, dateFormatter);
   }
+
   public String formatDate(LocalDate localDate) {
     return localDate.format(dateFormatter);
   }

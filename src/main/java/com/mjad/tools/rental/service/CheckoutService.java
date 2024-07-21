@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class CheckoutService implements ICheckout {
+
   @Autowired
   private ITool toolService;
   @Autowired
@@ -31,7 +32,7 @@ public class CheckoutService implements ICheckout {
     rentalAgreementDto.setToolDto(toolDto);
     populateRentalAgreementDto(toolDto.getType(), rentalDayCount, checkoutDate);
     LocalDate dueDate = calculateDueDate(rentalDayCount, checkoutDate);
-    rentalAgreementDto.setDueDate(utilityService.formatDate(dueDate));             //(dueDate.format(dateFormatter));
+    rentalAgreementDto.setDueDate(utilityService.formatDate(dueDate));
     rentalAgreementDto.setIndependenceDay(isIndependenceDay(dueDate, checkoutDate));
     rentalAgreementDto.setLaborDay(isLaborDay(utilityService.getLocalDate(checkoutDate), dueDate));
     rentalAgreementDto.setChargeDaysCount(getChargeDays(rentalDayCount));
@@ -46,21 +47,26 @@ public class CheckoutService implements ICheckout {
     // I Stored the rental agreement in the DTO to pass around, but I did not persist it to the database.
     rentalAgreementService.saveRentalAgreement(rentalAgreementDto);
   }
+
   private void createToolDto(String toolCode) {
     toolService.toolsList().stream()
         .filter(tool -> tool.getCode().equals(toolCode))
         .forEach(tool -> toolDto = new ToolDto(tool.getCode(), tool.getType(), tool.getBrand()));
   }
+
   private boolean isWeekendCharge() {
     return rentalAgreementDto.isWeekendCharge();
   }
+
   private boolean isHolidayCharge() {
     return rentalAgreementDto.isHolidayCharge();
   }
+
   private LocalDate calculateDueDate(int rentalDayCount, String checkoutDate) {
     LocalDate dueDate = utilityService.addRentalDaysToCheckoutDate(rentalDayCount, utilityService.getLocalDate(checkoutDate));
     return dueDate;
   }
+
   private void populateRentalAgreementDto(String type, int rentalDayCount, String checkoutDate) {
     List<RentalCharge> rentCharges = rentalChargeService.rentalChargelist();
     for(RentalCharge charge : rentCharges){
@@ -70,6 +76,7 @@ public class CheckoutService implements ICheckout {
       }
     }
   }
+
   private void setRentalAgreementDto(RentalCharge rentalCharge, int rentalDayCount, String checkoutDate) {
     rentalAgreementDto.setDailyRentalCharge(rentalCharge.getDailyChargeAmt());
     rentalAgreementDto.setHolidayCharge(rentalCharge.isHolidayCharge());
@@ -78,6 +85,7 @@ public class CheckoutService implements ICheckout {
     rentalAgreementDto.setRentalDays(rentalDayCount);
     rentalAgreementDto.setCheckoutDate(checkoutDate);
   }
+
   private int getChargeDays(int rentalDayCount) {
     int chargeDays = rentalDayCount;
     if (rentalAgreementDto.isIndependenceDay() || rentalAgreementDto.isLaborDay() ) {
@@ -90,18 +98,23 @@ public class CheckoutService implements ICheckout {
     }
     return chargeDays;
   }
+
   private double getPreDiscountCharge() {
     return rentalAgreementDto.getChargeDaysCount() * Double.valueOf(rentalAgreementDto.getDailyRentalCharge());
   }
+
   private int getDiscountPercent(int discountPercent) {
       return discountPercent;
   }
+
   private double getDiscountAmount(int discountPercent, double preDiscountCharge) {
     return (discountPercent * preDiscountCharge) / 100;
   }
+
   private double getFinalCharge(double preDiscountCharge, double discountAmount) {
     return preDiscountCharge - discountAmount;
   }
+
   private boolean isIndependenceDay(LocalDate dueDate, String checkoutDate) {
     LocalDate checkDate = utilityService.getLocalDate(checkoutDate);
     LocalDate forth = LocalDate.parse(utilityService.getIndependenceDay(checkDate));
@@ -111,6 +124,7 @@ public class CheckoutService implements ICheckout {
     }
     return isIndependenceDay;
   }
+
   private boolean isLaborDay(LocalDate checkoutDate, LocalDate dueDate) {
     boolean isLaborDay = false;
     int numberOfDaysInWeekend = 0;
@@ -128,4 +142,5 @@ public class CheckoutService implements ICheckout {
     rentalAgreementDto.setNumberOfDaysInWeekend(numberOfDaysInWeekend);
     return isLaborDay;
   }
+
 }
