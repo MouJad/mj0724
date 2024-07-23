@@ -1,7 +1,7 @@
 **<h2>The Goal</h2>**
 The goal is to have a an application that is broken down into multi-tiers and layers where each layer is decoupled from the others.
 This way we can change the database provider (eg. H2 to MySQL) with minimal update to the resource properties file. 
-Also any update or maintenance can be targetted toward a specific layer without needing to change any other code or logic elsewhere. 
+Also any update or maintenance can be targeted toward a specific layer without needing to change any other code or logic elsewhere. 
 
 **<h2>Prerequisites</h2>**
 You should have the following configuration to run this application
