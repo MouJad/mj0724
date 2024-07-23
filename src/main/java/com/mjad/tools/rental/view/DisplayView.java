@@ -24,22 +24,22 @@ public class DisplayView {
     System.out.println("\n\n\n\n\n\n");
   }
   private void displayTools(List<Tool> tools) {
-    String tableLayout = "| %-13s | %-13s | %-15s |%n";
+    String cellPadding = "| %-13s | %-13s | %-15s |%n";
     System.out.format("+---------------+---------------+-----------------+%n");
     System.out.format("| Tool Code     | Tool Type     | Brand           |%n");
     System.out.format("+---------------+---------------+-----------------+%n");
     for(Tool tool : tools){
-      System.out.format(tableLayout, tool.getCode(), tool.getType(), tool.getBrand());
+      System.out.format(cellPadding, tool.getCode(), tool.getType(), tool.getBrand());
     }
     System.out.format("+---------------+---------------+-----------------+%n");
   }
   private void displayRentalCharges(List<RentalCharge> rentalCharges) {
-    String tableLayout = "| %-13s | %-13s | %-15s | %-15s | %-15s |%n";
+    String cellPadding = "| %-13s | %-13s | %-15s | %-15s | %-15s |%n";
     System.out.format("+---------------+---------------+-----------------+-----------------+-----------------+%n");
     System.out.format("| Tool Type     | Daily Charge  | Weekday Charge  | Weekend Charge  | Holiday Charge  |%n");
     System.out.format("+---------------+---------------+-----------------+-----------------+-----------------+%n");
     for(RentalCharge charge : rentalCharges){
-      System.out.format(tableLayout, charge.getType(), "$"+charge.getDailyChargeAmt(), charge.isWeekdayCharge() ? "Yes":"No", charge.isWeekendCharge() ? "Yes":"No", charge.isHolidayCharge() ? "Yes":"No");
+      System.out.format(cellPadding, charge.getType(), "$"+charge.getDailyChargeAmt(), charge.isWeekdayCharge() ? "Yes":"No", charge.isWeekendCharge() ? "Yes":"No", charge.isHolidayCharge() ? "Yes":"No");
     }
     System.out.format("+---------------+---------------+-----------------+-----------------+-----------------+%n");
   }
