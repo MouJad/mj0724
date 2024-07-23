@@ -38,7 +38,7 @@ This is a Model-View-Controller multitier application that is structured as foll
   o	Data Transfer Object are just POJOs that carry data around between layers.</br>   
 
 **Steps**</br>
-*	Clone this respiratory to your local env.</br>
+*	Clone this repository to your local env.</br>
 *	H2 database is configured and used automatically.</br>
 o	DDL is handled by Hibernate based on the entities’ definitions.</br>
 o	DML is generated from my import.sql resource file.</br>
