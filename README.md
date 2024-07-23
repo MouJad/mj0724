@@ -29,13 +29,14 @@ This is a Model-View-Controller multitier application that is structured as foll
   o	This is where all the entities and their ORM data modeling are defined.</br>
   o	These entities map to the database tables designed in the schema.</br>
 * <ins>Service</ins></br>
-  o	This is where all the business rules and calculations take place.
+  o	This is where all the business rules and calculations take place.</br>
   o	It is isolated from the persistent layer or the client layer.</br>
 * <ins>DAO</ins></br>
   o	Data Access Object layer that separates the business & persistence layers.</br>
   o	All database interactions (e.g. CRUD) are encapsulated at this layer.</br>
 *	<ins>DTO</ins></br>
-  o	Data Transfer Object are just POJOs that carry data around between layers.</br>   
+  o	Data Transfer Object are just POJOs that carry data around between domains and layers.</br>
+  o	Stuffing more data in the DTO objects allows for less traffic, and method calls over the network.</br>
 
 **Steps**</br>
 *	Clone this repository to your local env.</br>
