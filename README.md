@@ -1,3 +1,8 @@
+**<h2>The Goal</h2>**
+The goal is to have a an application that is broken down into multi-tiers and layers where each layer is decoupled from the others.
+This way we can change the database provider (eg. H2 to MySQL) with minimal update to the resource properties file. 
+Also any update or maintenance can be targetted toward a specific layer without needing to change any other code or logic elsewhere. 
+
 **<h2>Prerequisites</h2>**
 You should have the following configuration to run this application
 
@@ -17,14 +22,15 @@ This is a Model-View-Controller multitier application that is structured as foll
   o	This a command line terminal that takes customers inputs and submit them as a request to the controller.</br>
   o	This Client can easily be changed to Web or Mobile client without interrupting the rest of application layers.</br>
 * <ins>Controller</ins></br>
-  o	This is the dispatcher (interceptor or façade) that delegates requests.</br>
-  o	It mediates between the client requests (View) and the business layer.</br>
-  o	To make it a Web application, then just spin-up a Rest Controller.</br>
+  o	This is the dispatcher (interceptor or façade) that delegates requests to the intended business service.</br>
+  o	It mediates between the client requests (View) and the business layer, while keeping the separation of concerns.</br>
+  o	To make it a Web application or Mobile, then build your web or mobile client and spin-up a Rest Api Controller to handle the requests.</br>
 * <ins>Model</ins></br>
   o	This is where all the entities and their ORM data modeling are defined.</br>
   o	These entities map to the database tables designed in the schema.</br>
 * <ins>Service</ins></br>
-  o	This is where all the business rules and calculations take place.</br>
+  o	This is where all the business rules and calculations take place.
+  o	It is isolated from the persistent layer or the client layer.</br>
 * <ins>DAO</ins></br>
   o	Data Access Object layer that separates the business & persistence layers.</br>
   o	All database interactions (e.g. CRUD) are encapsulated at this layer.</br>
